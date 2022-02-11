@@ -1,0 +1,33 @@
+---
+- name: "Install snapd package"
+  apt:
+    pkg:
+      - snapd
+    install_recommends: yes
+    update_cache: yes
+    state: present
+
+- name: "Install snap core"
+  snap:
+    name: core
+    state: present
+
+- name: "Remove old certbot package if installed"
+  apt:
+    pkg:
+      - certbot
+      - python-certbot-apache
+    state: absent
+
+- name: "Install certbot snap package"
+  snap:
+    name: certbot
+    classic: yes
+    state: present
+
+- name: "Create symlink: ln -s /snap/bin/certbot /usr/bin/certbot "
+  file:
+    src: /snap/bin/certbot
+    dest: /usr/bin/certbot
+    state: link
+...
